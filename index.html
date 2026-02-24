@@ -1,15 +1,373 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Intel Sustainability Summit Check-In</title>
-    <!-- Add Font Awesome CSS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Barlow", sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #0071c5 0%, #0058ab 100%);
+        color: white;
+        padding: 2rem 1rem;
+        text-align: center;
+      }
+
+      .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .intel-logo {
+        max-width: 120px;
+        margin-bottom: 1rem;
+        height: auto;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .hero-divider {
+        width: 60px;
+        height: 4px;
+        background-color: white;
+        margin: 1rem auto;
+        border-radius: 2px;
+      }
+
+      .hero p {
+        font-size: 1.05rem;
+        font-weight: 400;
+        opacity: 0.95;
+      }
+
+      .hero i {
+        margin-right: 0.5rem;
+      }
+
+      .attendance-tracker {
+        background-color: #0058ab;
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .attendance-header {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .attendance-header i {
+        margin-right: 0.5rem;
+        color: #fff;
+      }
+
+      .progress-container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #0071c5, #00b4d8);
+        border-radius: 10px;
+        width: 0%;
+        transition: width 0.4s ease;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #0071c5;
+      }
+
+      .check-in {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .input-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .input-wrapper {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .input-wrapper input,
+      .input-wrapper select {
+        padding: 0.75rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 4px;
+        font-family: 'Barlow', sans-serif;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .input-wrapper input:focus,
+      .input-wrapper select:focus {
+        outline: none;
+        border-color: #0071c5;
+        box-shadow: 0 0 0 3px rgba(0, 113, 197, 0.1);
+      }
+
+      #check-in-btn {
+        background-color: #0071c5;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        align-self: flex-start;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      #check-in-btn:hover {
+        background-color: #0058ab;
+        transform: translateY(-2px);
+      }
+
+      #check-in-btn:active {
+        transform: translateY(0);
+      }
+
+      #check-in-btn i {
+        margin-right: 0.25rem;
+      }
+
+      .team-stats {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .team-stats h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #0071c5;
+      }
+
+      .total-attendance {
+        background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+        padding: 1.5rem;
+        border-radius: 8px;
+        border-left: 4px solid #0071c5;
+        margin-bottom: 1.5rem;
+      }
+
+      .total-attendance p {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
+
+      #attendance-progress {
+        width: 100%;
+        height: 24px;
+        border-radius: 12px;
+        border: none;
+        background-color: #e0e0e0;
+        margin-bottom: 1.5rem;
+      }
+
+      #attendance-progress::-webkit-progress-bar {
+        background-color: #e0e0e0;
+        border-radius: 12px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      #attendance-progress::-webkit-progress-value {
+        background-color: #0071c5;
+        border-radius: 12px;
+        transition: width 0.4s ease;
+      }
+
+      #attendance-progress::-moz-progress-bar {
+        background-color: #0071c5;
+        border-radius: 12px;
+        transition: width 0.4s ease;
+      }
+
+      .teams-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .team-card {
+        background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+
+      .team-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 16px rgba(0, 113, 197, 0.15);
+        border-color: #0071c5;
+      }
+
+      .team-name {
+        display: block;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #333;
+      }
+
+      .team-count {
+        display: block;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #0071c5;
+      }
+
+      .attendee-section {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .attendee-section h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #0071c5;
+      }
+
+      #attendee-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      #attendee-list li {
+        background-color: #f9f9f9;
+        padding: 1rem;
+        border-left: 4px solid #0071c5;
+        border-radius: 4px;
+        font-size: 1rem;
+        color: #333;
+      }
+
+      #attendee-list li:nth-child(odd) {
+        background-color: #f5f5f5;
+      }
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      section {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      section h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #0071c5;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 1.5rem;
+        font-size: 0.9rem;
+        margin-top: 2rem;
+      }
+
+      footer a {
+        color: #0071c5;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      footer a:hover {
+        color: #00b4d8;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: #999;
+        font-size: 1rem;
+      }
+    </style>
   </head>
   <body>
     <!-- Hero section with Intel branding -->
@@ -24,6 +382,7 @@
         </p>
       </div>
     </div>
+
     <!-- Attendance tracking -->
     <div class="attendance-tracker">
       <div class="attendance-header">
@@ -31,33 +390,36 @@
         Attendance: <span id="attendeeCount">0</span>/50
       </div>
       <div class="progress-container">
-        <div id="progressBar" class="progress-bar"></div>
+        <div class="progress-bar">
+          <div id="progressBar" class="progress-bar-fill"></div>
+        </div>
       </div>
     </div>
+
     <div class="container">
       <!-- Feedback message -->
       <p id="greeting"></p>
 
       <!-- Check-in form -->
-      <form class="check-in" id="checkInForm">
-        <label for="attendeeName" class="form-label">Attendee Check-In</label>
+      <form class="check-in" id="check-in-form">
+        <label for="attendee-name" class="form-label">Attendee Check-In</label>
         <div class="form-group">
           <div class="input-wrapper">
             <input
               type="text"
-              id="attendeeName"
-              name="attendeeName"
+              id="attendee-name"
+              name="attendee-name"
               placeholder="Enter name..."
               required
             />
-            <select id="teamSelect" name="team" required>
+            <select id="team-select" name="team" required>
               <option value="" disabled selected>Select Team...</option>
               <option value="water">Team Water Wise</option>
               <option value="zero">Team Net Zero</option>
-              <option value="power">Team Renewables</option>
+              <option value="renewables">Team Renewables</option>
             </select>
           </div>
-          <button type="submit" id="checkInBtn">
+          <button type="submit" id="check-in-btn">
             <i class="fas fa-user-check"></i> Check In
           </button>
         </div>
@@ -66,25 +428,39 @@
       <!-- Team stats -->
       <div class="team-stats">
         <h3>Team Attendance</h3>
+        <div class="total-attendance">
+          <p>Total Attendees</p>
+          <div id="total-count">0</div>
+        </div>
+        <progress id="attendance-progress" max="50" value="0"></progress>
         <div class="teams-grid">
           <div class="team-card water">
             <span class="team-name">🌊 Team Water Wise</span>
-            <span class="team-count" id="waterCount">0</span>
+            <span class="team-count" id="water-count">0</span>
           </div>
           <div class="team-card zero">
             <span class="team-name">🌿 Team Net Zero</span>
-            <span class="team-count" id="zeroCount">0</span>
+            <span class="team-count" id="zero-count">0</span>
           </div>
-          <div class="team-card power">
+          <div class="team-card renewables">
             <span class="team-name">⚡ Team Renewables</span>
-            <span class="team-count" id="powerCount">0</span>
+            <span class="team-count" id="renewables-count">0</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Attendee List Section -->
+      <div class="attendee-section">
+        <h3>Checked-In Attendees</h3>
+        <ul id="attendee-list"></ul>
+        <div class="empty-state" id="empty-state">
+          No attendees checked in yet.
         </div>
       </div>
     </div>
 
-    <footer class="footer">
-      &copy; 2025 Intel •
+    <footer>
+      &copy; 2026 Intel •
       <a
         href="https://www.intel.com/content/www/us/en/corporate-responsibility/2030-goals.html"
         class="footer-link"
